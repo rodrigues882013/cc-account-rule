@@ -1,14 +1,18 @@
-defmodule  NuAuthorizer.Application.Domain.Transaction do
+defmodule  NuAuthorizer.Domain.Transaction do
   @behaviour NuAuthorizer.Domain.Behaviours.Transaction
 
   @impl NuAuthorizer.Domain.Behaviours.Transaction
-  def create(%{"transaction" => %{"merchant" => _, "amount" => _, "time" => _}} = _value) do
-    :ok
-  end
-
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
-  def create(%{"account" => %{"active-card" =>  _, "available-limit" => _}} = value) do
-    :account_already_initialized
+  def create(%{"transaction" => %{"amount" => ammount, "merchant" => merchant, "time" => time}}) do
+    {
+      :ok,
+      %{
+        "transaction" => %{
+          "amount" => ammount,
+          "merchant" => merchant,
+          "time" => to_datetime(time)
+        }
+      }
+    }
   end
 
   @impl NuAuthorizer.Domain.Behaviours.Transaction
@@ -16,4 +20,13 @@ defmodule  NuAuthorizer.Application.Domain.Transaction do
     :error
   end
 
+  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  def create(_value) do
+    :invalid_parameter
+  end
+
+  defp to_datetime(value) do
+    {:ok, datetime, 0} = DateTime.from_iso8601(value)
+    datetime
+  end
 end

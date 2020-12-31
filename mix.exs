@@ -6,7 +6,7 @@ defmodule NuAuthorizer.MixProject do
       app: :nu_athorizer,
       version: "0.1.0",
       elixir: "~> 1.11",
-      escript: [main_module: NuAuthorizer.CMD],
+      escript: [main_module: NuAuthorizer.CLI],
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -24,7 +24,10 @@ defmodule NuAuthorizer.MixProject do
     [
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:pipe_to, "~> 0.2"},
+      {:mock, "~> 0.3.6", only: :test},
+
     ]
   end
 end

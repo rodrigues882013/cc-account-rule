@@ -1,3 +1,3 @@
 defmodule NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour do
-  @callback execute(term()) :: {:ok, term()} | :error | :invalid_parameter
+  @callback execute(term()) :: term() | :error | :invalid_parameter
 end
