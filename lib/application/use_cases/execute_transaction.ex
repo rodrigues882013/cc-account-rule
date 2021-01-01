@@ -36,13 +36,16 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
           |> Map.put("violations", violations ++ ["insufficient-limit"]),
           balance
         }
-      balance >= amount -> fn
-        if length violations
+      balance >= amount ->
+      if length(violations) == 0 do
         {
           transaction
           |> Map.put("after_operation", balance - amount),
           balance - amount
         }
+      else
+        { transaction, balance }
+      end
     end
   end
 
