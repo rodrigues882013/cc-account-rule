@@ -3,10 +3,87 @@ defmodule NuAuthorizer.Adapters.Controllers.OperationController do
   alias NuAuthorizer.Application.UseCases.CreateTransactions
   alias NuAuthorizer.Application.UseCases.ExecuteTransaction
 
+#  def run() do
+#    IO.stream(:stdio, :line)
+#    |> split_operations
+#    |> create_account
+#    |> create_transactions
+#    |> dispatch_transaction
+#    |> process_response
+#
+#  end
 
   def run() do
-    IO.stream(:stdio, :line)
-    |> split_operations
+
+    mock_operation =
+      {
+        [
+          %{
+            "account" => %{
+              "active-card" => true,
+              "available-limit" => 100
+            }
+          }
+        ],
+        [
+          %{
+            "transaction" => %{
+              "merchant" => "Burger King",
+              "amount" => 20,
+              "time" => "2019-02-13T11:00:00.000Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Habbib's",
+              "amount" => 90,
+              "time" => "2019-02-13T11:03:00.000Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Habbib's",
+              "amount" => 90,
+              "time" => "2019-02-13T11:02:00.000Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Shell",
+              "amount" => 90,
+              "time" => "2019-02-13T11:01:00.000Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Ipiranga",
+              "amount" => 90,
+              "time" => "2019-02-13T11:01:01.000Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Ipiranga",
+              "amount" => 90,
+              "time" => "2019-02-13T11:01:01.002Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Ipiranga",
+              "amount" => 5,
+              "time" => "2020-02-13T11:01:01.002Z"
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Xevron",
+              "amount" => 200,
+              "time" => "2020-02-13T20:01:01.002Z"
+            }
+          }
+        ]
+      }
     |> create_account
     |> create_transactions
     |> dispatch_transaction

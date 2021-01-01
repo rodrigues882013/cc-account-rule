@@ -18,7 +18,7 @@ defmodule NuAuthorizer.Application.UseCases.CreateTransactions do
   end
 
   defp process_result(:invalid_parameter), do: :transaction_creation_error
-  defp process_result(:error), do: :account_unknown_error
+  defp process_result(:error), do: :transaction_unknown_error
   defp process_result({:ok, value} = _result), do: value
 
 end
