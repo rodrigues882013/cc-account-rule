@@ -2,7 +2,15 @@ defmodule  NuAuthorizer.Domain.Transaction do
   @behaviour NuAuthorizer.Domain.Behaviours.Transaction
 
   @impl NuAuthorizer.Domain.Behaviours.Transaction
-  def create(%{"transaction" => %{"amount" => ammount, "merchant" => merchant, "time" => time}}) do
+  def create(
+        %{
+          "transaction" => %{
+            "amount" => ammount,
+            "merchant" => merchant,
+            "time" => time
+          }
+        }
+      ) do
     {
       :ok,
       %{

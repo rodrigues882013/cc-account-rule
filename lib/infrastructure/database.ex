@@ -1,10 +1,6 @@
 defmodule NuAuthorizer.Infrastructure.Database do
   use Agent
 
-
-   @doc """
-  Starts a new database.
-  """
   def start_link(initial_value) do
     Agent.start_link(fn -> initial_value end, name: __MODULE__)
   end

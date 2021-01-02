@@ -4,7 +4,14 @@ defmodule NuAuthorizer.Domain.Account do
   defstruct Account: [:active_card, :available_limit]
 
   @impl NuAuthorizer.Domain.Behaviours.Account
-  def create(%{"account" => %{"active-card" =>  _, "available-limit" => _}} = value) do
+  def create(
+        %{
+          "account" => %{
+            "active-card" => _,
+            "available-limit" => _
+          }
+        } = value
+      ) do
     {:ok, value}
   end
 
