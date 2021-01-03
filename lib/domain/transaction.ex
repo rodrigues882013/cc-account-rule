@@ -5,7 +5,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
   def create(
         %{
           "transaction" => %{
-            "amount" => ammount,
+            "amount" => amount,
             "merchant" => merchant,
             "time" => time
           }
@@ -15,7 +15,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
       :ok,
       %{
         "transaction" => %{
-          "amount" => ammount,
+          "amount" => amount,
           "merchant" => merchant,
           "time" => to_datetime(time)
         }
@@ -24,13 +24,125 @@ defmodule  NuAuthorizer.Domain.Transaction do
   end
 
   @impl NuAuthorizer.Domain.Behaviours.Transaction
-  def create(%{} = _value) do
-    :error
+  def create(
+        %{
+          "transaction" => %{
+            "amount" => amount,
+            "merchant" => merchant,
+          }
+        }
+      ) do
+    {
+      :transaction_invalid_parameter,
+      %{
+        "transaction" => %{
+          "amount" => amount,
+          "merchant" => merchant,
+        },
+        "violations" => ["transaction-missed-time"],
+      }
+    }
   end
 
   @impl NuAuthorizer.Domain.Behaviours.Transaction
-  def create(_value) do
-    :invalid_parameter
+  def create(
+        %{
+          "transaction" => %{
+            "amount" => amount,
+            "time" => time
+          }
+        }
+      ) do
+    {
+      :transaction_invalid_parameter,
+      %{
+        "transaction" => %{
+          "amount" => amount,
+          "time" => to_datetime(time),
+        },
+        "violations" => ["transaction-missed-merchant"],
+      }
+    }
+  end
+
+  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  def create(
+        %{
+          "transaction" => %{
+            "merchant" => merchant,
+            "time" => time
+          }
+        }
+      ) do
+    {
+      :transaction_invalid_parameter,
+      %{
+        "transaction" => %{
+          "merchant" => merchant,
+          "time" => to_datetime(time),
+        },
+        "violations" => ["transaction-missed-amount"]
+      }
+    }
+  end
+
+  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  def create(
+        %{
+          "transaction" => %{
+            "time" => time
+          }
+        }
+      ) do
+    {
+      :transaction_invalid_parameter,
+      %{
+        "transaction" => %{
+          "time" => to_datetime(time),
+        },
+        "violations" => ["transaction-missed-merchant", "transaction-missed-amount"],
+      }
+    }
+  end
+
+  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  def create(
+        %{
+          "transaction" => %{
+            "amount" => amount
+          }
+        }
+      ) do
+    {
+      :transaction_invalid_parameter,
+      %{
+        "transaction" => %{
+          "amount" => amount,
+        },
+        "violations" => ["transaction-missed-merchant", "transaction-missed-time"],
+      }
+    }
+  end
+
+  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  def create(
+        %{
+          "transaction" => %{
+          }
+        }
+      ) do
+    {
+      :transaction_invalid_parameter,
+      %{
+        "transaction" => %{},
+        "violations" => ["transaction-missed-time", "transaction-missed-merchant", "transaction-missed-amount"],
+      }
+    }
+  end
+
+  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  def create(_) do
+    :error
   end
 
   defp to_datetime(value) do

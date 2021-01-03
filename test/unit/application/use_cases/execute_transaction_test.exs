@@ -1,5 +1,5 @@
 defmodule NuAuthorizer.ExecuteTransactionTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias NuAuthorizer.Application.UseCases.ExecuteTransaction
   alias NuAuthorizer.Support.CustomHelpers
@@ -99,29 +99,32 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 30,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 30,
+                 "before-operation" => 50
                },
                %{
-                 "after_operation" => 0,
                  "transaction" => %{
                    "amount" => 30,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:15:00.000Z]
-                 }
+                 },
+                 "after-operation" => 0,
+                 "before-operation" => 30
                },
                %{
-                 "after_operation" => 0,
                  "transaction" => %{
                    "amount" => 30,
                    "merchant" => "Posto Ipiranga",
                    "time" => ~U[2019-02-13 11:20:00.000Z]
                  },
-                 "violations" => ["insufficient-limit"]
+                 "violations" => ["insufficient-limit"],
+                 "after-operation" => 0,
+                 "before-operation" => 0
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -161,20 +164,22 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 30,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 30,
+                 "before-operation" => 50
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:03:00.000Z]
-                 }
+                 },
+                 "after-operation" => 29,
+                 "before-operation" => 30
                },
                %{
                  "transaction" => %{
@@ -182,7 +187,9 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:04:00.000Z]
                  },
-                 "violations" => ["doubled-transaction"]
+                 "violations" => ["doubled-transaction"],
+                 "after-operation" => 29,
+                 "before-operation" => 29
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -229,20 +236,22 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 30,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 30,
+                 "before-operation" => 50
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:02.000Z]
-                 }
+                 },
+                 "after-operation" => 29,
+                 "before-operation" => 30
                },
                %{
                  "transaction" => %{
@@ -250,6 +259,8 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:03.000Z]
                  },
+                 "after-operation" => 28,
+                 "before-operation" => 29
                },
                %{
                  "transaction" => %{
@@ -257,7 +268,9 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
                    "merchant" => "Solar prado",
                    "time" => ~U[2019-02-13 11:00:04.000Z]
                  },
-                 "violations" => ["high-frequency-small-interval"]
+                 "violations" => ["high-frequency-small-interval"],
+                 "after-operation" => 28,
+                 "before-operation" => 28
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -304,37 +317,44 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 30,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 30,
+                 "before-operation" => 50
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:02.000Z]
-                 }
+                 },
+                 "after-operation" => 29,
+                 "before-operation" => 30
                },
                %{
-                 "after_operation" => 28,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:03.000Z]
                  },
+                 "after-operation" => 28,
+                 "before-operation" => 29
                },
                %{
-                 "after_operation" => 28,
                  "transaction" => %{
                    "amount" => 2,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:04.000Z]
                  },
-                 "violations" => ["high-frequency-small-interval", "doubled-transaction"]
+                 "violations" => [
+                   "high-frequency-small-interval",
+                   "doubled-transaction"
+                 ],
+                 "after-operation" => 28,
+                 "before-operation" => 28
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -381,37 +401,45 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 30,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 30,
+                 "before-operation" => 50
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:02.000Z]
-                 }
+                 },
+                 "after-operation" => 29,
+                 "before-operation" => 30
                },
                %{
-                 "after_operation" => 28,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:03.000Z]
                  },
+                 "after-operation" => 28,
+                 "before-operation" => 29
                },
                %{
-                 "after_operation" => 28,
                  "transaction" => %{
                    "amount" => 900,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:04.000Z]
                  },
-                 "violations" => ["high-frequency-small-interval", "doubled-transaction", "insufficient-limit"]
+                 "violations" => [
+                   "high-frequency-small-interval",
+                   "doubled-transaction",
+                   "insufficient-limit"
+                 ],
+                 "after-operation" => 28,
+                 "before-operation" => 28
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -458,38 +486,46 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 30,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 30,
+                 "before-operation" => 50
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 1,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:02.000Z]
-                 }
+                 },
+                 "after-operation" => 29,
+                 "before-operation" => 30
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 100,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:03.000Z]
                  },
-                 "violations" => ["insufficient-limit"]
+                 "violations" => ["insufficient-limit"],
+                 "after-operation" => 29,
+                 "before-operation" => 29
                },
                %{
-                 "after_operation" => 29,
                  "transaction" => %{
                    "amount" => 900,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 11:00:04.000Z]
                  },
-                 "violations" => ["high-frequency-small-interval", "doubled-transaction", "insufficient-limit"]
+                 "violations" => [
+                   "high-frequency-small-interval",
+                   "doubled-transaction",
+                   "insufficient-limit"
+                 ],
+                 "after-operation" => 29,
+                 "before-operation" => 29
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -536,37 +572,41 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 180,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
-                 }
+                 },
+                 "after-operation" => 180,
+                 "before-operation" => 200
                },
                %{
-                 "after_operation" => 120,
                  "transaction" => %{
                    "amount" => 60,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:02.000Z]
-                 }
+                 },
+                 "after-operation" => 120,
+                 "before-operation" => 180
                },
                %{
-                 "after_operation" => 120,
                  "transaction" => %{
                    "amount" => 70,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:03.000Z]
                  },
-                 "violations" => ["doubled-transaction"]
+                 "violations" => ["doubled-transaction"],
+                 "after-operation" => 120,
+                 "before-operation" => 120
                },
                %{
-                 "after_operation" => 40,
                  "transaction" => %{
                    "amount" => 80,
                    "merchant" => "Chaves Store",
                    "time" => ~U[2019-02-13 12:00:04.000Z]
                  },
+                 "after-operation" => 40,
+                 "before-operation" => 120
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -599,22 +639,24 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
 
       assert [
                %{
-                 "after_operation" => 0,
                  "transaction" => %{
                    "amount" => 20,
                    "merchant" => "Burger King",
                    "time" => ~U[2019-02-13 11:00:00.000Z]
                  },
-                 "violations" => ["insufficient-limit"]
+                 "violations" => ["insufficient-limit"],
+                 "after-operation" => 0,
+                 "before-operation" => 0
                },
                %{
-                 "after_operation" => 0,
                  "transaction" => %{
                    "amount" => 60,
                    "merchant" => "Habbib's",
                    "time" => ~U[2019-02-13 11:00:02.000Z]
                  },
-                 "violations" => ["insufficient-limit"]
+                 "violations" => ["insufficient-limit"],
+                 "after-operation" => 0,
+                 "before-operation" => 0
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end
@@ -665,7 +707,7 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
              ] = ExecuteTransaction.execute(transactions, account)
     end
 
-    test "given a account no initialized and a group of transactions then dropped all" do
+    test "given a account not initialized and a group of transactions then dropped all" do
       {transactions, account} = {
         [
           %{
@@ -683,9 +725,7 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
             }
           }
         ],
-        %{
-          "account" => :account_not_initialized
-        }
+        :account_not_initialized
       }
 
       assert [
@@ -704,6 +744,47 @@ defmodule NuAuthorizer.ExecuteTransactionTest do
                    "time" => ~U[2019-02-13 11:00:02.000Z]
                  },
                  "violations" => ["account-not-initialized"]
+               }
+             ] = ExecuteTransaction.execute(transactions, account)
+    end
+
+    test "given a account already initialized and a group of transactions then dropped all" do
+      {transactions, account} = {
+        [
+          %{
+            "transaction" => %{
+              "merchant" => "Burger King",
+              "amount" => 20,
+              "time" => CustomHelpers.to_datetime("2019-02-13T11:00:00.000Z")
+            }
+          },
+          %{
+            "transaction" => %{
+              "merchant" => "Habbib's",
+              "amount" => 60,
+              "time" => CustomHelpers.to_datetime("2019-02-13T11:00:02.000Z")
+            }
+          }
+        ],
+        :account_already_initialized
+      }
+
+      assert [
+               %{
+                 "transaction" => %{
+                   "amount" => 20,
+                   "merchant" => "Burger King",
+                   "time" => ~U[2019-02-13 11:00:00.000Z]
+                 },
+                 "violations" => ["account-already-initialized"]
+               },
+               %{
+                 "transaction" => %{
+                   "amount" => 60,
+                   "merchant" => "Habbib's",
+                   "time" => ~U[2019-02-13 11:00:02.000Z]
+                 },
+                 "violations" => ["account-already-initialized"]
                }
              ] = ExecuteTransaction.execute(transactions, account)
     end

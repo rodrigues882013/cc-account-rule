@@ -14,11 +14,17 @@ defmodule NuAuthorizer.Application.UseCases.CreateAccount do
   end
 
   @impl NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour
-  def execute(_), do: process_result()
+  def execute([]), do: process_result(:account_not_initialized)
 
+  @impl NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour
+  def execute(accounts) when length(accounts) > 1 do
+    process_result(:account_already_initialized)
+  end
 
   defp process_result(:invalid_parameter), do: :account_creation_error
-  defp process_result(:error), do: :account_unknown_error
+  defp process_result(:error), do: :account_creation_error
   defp process_result({:ok, value} = _result), do: value
-  defp process_result, do: :account_already_initialized
+  defp process_result(:account_not_initialized), do: :account_not_initialized
+  defp process_result(:account_already_initialized), do: :account_already_initialized
+
 end

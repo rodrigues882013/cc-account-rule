@@ -5,7 +5,6 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
 
   @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(
-
           transactions,
           %{
             "account" => %{
@@ -14,13 +13,18 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
           } = account
 
       ) do
-    transactions
+
+    {safe_transactions, transactions_with_previous_errors} =
+      transactions |> Enum.split_with( fn tx -> has_no_previous_transaction_errors(tx) end)
+
+    safe_transactions
+    |> Enum.filter( fn tx -> has_no_previous_transaction_errors(tx) end)
     |> do_transactions(account)
+    |> merge(transactions_with_previous_errors)
   end
 
   @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(
-
           transactions,
           %{
             "account" => %{
@@ -34,9 +38,21 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
   end
 
   @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
-  def execute(transactions, %{"account" => :account_not_initialized} = account) do
+  def execute(transactions, :account_not_initialized) do
     transactions
     |> Enum.map(fn tx -> apply_account_not_initialized_rule(tx) end)
+  end
+
+  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  def execute(transactions, :account_already_initialized) do
+    transactions
+    |> Enum.map(fn tx -> apply_account_already_initialized_rule(tx) end)
+  end
+
+  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  def execute(transactions, :account_creation_error) do
+    transactions
+    |> Enum.map(fn tx -> apply_account_creation_error_rule(tx) end)
   end
 
   defp do_transactions(
@@ -73,15 +89,19 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
     |> Map.put("violations", ["card-not-active"])
   end
 
-  defp apply_account_not_initialized_rule(
-         %{
-           "transaction" => %{
-             "amount" => amount
-           }
-         } = transaction
-       ) do
+  defp apply_account_not_initialized_rule(%{"transaction" => _ } = transaction) do
     transaction
     |> Map.put("violations", ["account-not-initialized"])
+  end
+
+  defp apply_account_already_initialized_rule(%{"transaction" => _} = transaction) do
+    transaction
+    |> Map.put("violations", ["account-already-initialized"])
+  end
+
+  defp apply_account_creation_error_rule(%{"transaction" => _} = transaction) do
+    transaction
+    |> Map.put("violations", ["account-creation-error"])
   end
 
   defp apply_balance_rule(
@@ -98,7 +118,8 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
       balance < amount ->
         {
           transaction
-          |> Map.put("after_operation", balance)
+          |> Map.put("before-operation", balance)
+          |> Map.put("after-operation", balance)
           |> Map.put("violations", violations ++ ["insufficient-limit"]),
           balance
         }
@@ -106,13 +127,15 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
         if length(violations) == 0 do
           {
             transaction
-            |> Map.put("after_operation", balance - amount),
+            |> Map.put("before-operation", balance)
+            |> Map.put("after-operation", balance - amount),
             balance - amount
           }
         else
           {
             transaction
-            |> Map.put("after_operation", balance),
+            |> Map.put("before-operation", balance)
+            |> Map.put("after-operation", balance),
             balance
           }
         end
@@ -181,5 +204,24 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
     end
   end
 
+  defp has_no_previous_transaction_errors(transaction) do
+    previous_violations = transaction |> Map.get("violations")
+    previous_violations == nil
+  end
 
+  defp merge(executed_transactions, transaction_with_previous_errors) do
+    executed_transactions ++ transaction_with_previous_errors
+    |> Enum.sort(fn first, second -> comparable(first, second) end)
+  end
+
+  def comparable(_transaction, %{"transaction" => %{"merchant" => _, "amount" => _}, "violations" => _}), do: true
+  def comparable(_transaction, %{"transaction" => %{"amount" => _}, "violations" => _}), do: true
+  def comparable(%{"transaction" => %{"time" => t1}}, %{"transaction" => %{"time" => t2}}) do
+    result = DateTime.compare(t1, t2)
+    cond do
+      result == :lt -> true
+      result == :eq -> true
+      result == :gt -> false
+    end
+  end
 end
