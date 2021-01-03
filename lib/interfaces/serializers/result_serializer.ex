@@ -17,12 +17,6 @@ defmodule NuAuthorizer.Interface.Serializers.ResultSerializer do
     |> Enum.join("\n")
   end
 
-  defp process_result({error_param, result}) do
-    result
-    |> Enum.map(fn log -> transform(log, {:error, error_param}) end)
-    |> Enum.join("\n")
-  end
-
   defp process_result(
          %{
            "account" => %{
@@ -63,13 +57,13 @@ defmodule NuAuthorizer.Interface.Serializers.ResultSerializer do
 
   defp transform(tail, active_card, available_limit) do
     head = %{
-      "account" => %{
-        "active-card" => active_card,
-        "available-limit" => available_limit
-      },
-      "violations" => []
-    }
-    |> Jason.encode!
+             "account" => %{
+               "active-card" => active_card,
+               "available-limit" => available_limit
+             },
+             "violations" => []
+           }
+           |> Jason.encode!
 
     [head] ++ tail
   end

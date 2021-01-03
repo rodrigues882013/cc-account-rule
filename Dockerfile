@@ -10,6 +10,6 @@ RUN mkdir /app
 WORKDIR /app
 COPY . /app
 
-RUN mix local.hex --force && mix deps.get
+RUN mix local.hex --force && mix local.rebar --force && mix deps.get
 RUN MIX_ENV=$MIX_ENV mix escript.build
 CMD ["./authorizer"]
