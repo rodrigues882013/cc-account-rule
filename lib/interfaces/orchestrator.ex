@@ -12,85 +12,8 @@ defmodule NuAuthorizer.Interface.Orchestrator do
 
     {account, transaction}
     |> ResultSerializer.serialize
+    |> IO.inspect
   end
-
-  #  def run() do
-  #
-  #    {account_payload, transactions_payload} =
-  #      {
-  #        [
-  #          %{
-  #            "account" => %{
-  #              "active-card" => true,
-  #              "available-limit" => 100
-  #            }
-  #          }
-  #        ],
-  #        [
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Burger King",
-  #              "amount" => 20,
-  #              "time" => "2019-02-13T11:00:00.000Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Habbib's",
-  #              "amount" => 90,
-  #              "time" => "2019-02-13T11:03:00.000Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Habbib's",
-  #              "amount" => 90,
-  #              "time" => "2019-02-13T11:02:00.000Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Shell",
-  #              "amount" => 90,
-  #              "time" => "2019-02-13T11:01:00.000Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Ipiranga",
-  #              "amount" => 90,
-  #              "time" => "2019-02-13T11:01:01.000Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Ipiranga",
-  #              "amount" => 90,
-  #              "time" => "2019-02-13T11:01:01.002Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Ipiranga",
-  #              "amount" => 5,
-  #              "time" => "2020-02-13T11:01:01.002Z"
-  #            }
-  #          },
-  #          %{
-  #            "transaction" => %{
-  #              "merchant" => "Xevron",
-  #              "amount" => 200,
-  #              "time" => "2020-02-13T20:01:01.002Z"
-  #            }
-  #          }
-  #        ]
-  #      }
-  #
-  #    dispatch(account_payload)
-  #    |> dispatch(transactions_payload)
-  #    |> ResultSerializer.serialize
-  #
-  #  end
 
   defp split_operations(stream_data) do
     stream_data

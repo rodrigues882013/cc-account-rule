@@ -1,0 +1,1 @@
+./nu_authorizer < $1
