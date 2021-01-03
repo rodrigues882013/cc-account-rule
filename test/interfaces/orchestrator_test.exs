@@ -4,7 +4,6 @@ defmodule NuAuthorizer.Interface.OrchestratorTest do
   import Mock
 
   alias NuAuthorizer.Interface.Orchestrator
-  alias NuAuthorizer.Support.CustomHelpers
 
   describe "run" do
 
@@ -19,7 +18,6 @@ defmodule NuAuthorizer.Interface.OrchestratorTest do
       input_account_already_initialized = "{\"account\": {\"active-card\": true, \"available-limit\": 100}}\n{\"account\":{\"active-card\": true, \"available-limit\": 100}}\n{\"transaction\":{\"merchant\": \"Burger King\",\"amount\":20,\"time\":\"2019-02-13T10:00:00.000Z\"}}"
 
       input_account_not_initialized = "{\"transaction\":{\"merchant\": \"Burger King\", \"amount\":20,\"time\":\"2019-02-13T10:00:00.000Z\"}}\n{\"transaction\": {\"merchant\": \"Habbib's\", \"amount\": 90, \"time\":\"2019-02-13T11:00:00.000Z\"}}"
-      output_account_not_initialized = "{\"account\":{\"active-card\":false,\"available-limit\":\"not-applicable\"},\"violations\":[\"account-not-initialized\"]}\n{\"account\":{\"active-card\":false,\"available-limit\":\"not-applicable\"},\"violations\":[\"account-not-initialized\"]}"
       output_account_already_initialized = "{\"account\":{\"active-card\":false,\"available-limit\":\"not-applicable\"},\"violations\":[\"account-already-initialized\"]}"
       result = [
         %{
@@ -77,7 +75,7 @@ defmodule NuAuthorizer.Interface.OrchestratorTest do
       input_right = context.input_right
       output_right = context.output_right
 
-      with_mock IO, [read: fn (:stdio, :all) -> input_right end] do
+      with_mock IO, [:passthrough], [read: fn (:stdio, :all) -> input_right end] do
         assert output_right == Orchestrator.run()
       end
     end

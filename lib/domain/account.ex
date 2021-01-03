@@ -1,8 +1,6 @@
 defmodule NuAuthorizer.Domain.Account do
   @behaviour NuAuthorizer.Domain.Behaviours.Account
 
-  defstruct Account: [:active_card, :available_limit]
-
   @impl NuAuthorizer.Domain.Behaviours.Account
   def create(
         %{

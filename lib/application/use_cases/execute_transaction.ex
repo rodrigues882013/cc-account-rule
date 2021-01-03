@@ -1,8 +1,6 @@
 defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
   @behaviour NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
 
-  alias NuAuthorizer.Infrastructure.Repository.TransactionRepository
-
   @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(
           transactions,
@@ -30,7 +28,7 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
             "account" => %{
               "active-card" => false
             }
-          } = account
+          } = _account
 
       ) do
     transactions
@@ -60,7 +58,7 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
          %{
            "account" => %{
              "available-limit" => limit,
-             "active-card" => is_active
+             "active-card" => _is_active
            }
          }
        ) do
@@ -81,7 +79,7 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
   defp apply_credit_card_rule(
          %{
            "transaction" => %{
-             "amount" => amount
+             "amount" => _amount
            }
          } = transaction
        ) do
@@ -153,7 +151,7 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
              "transaction" => %{
                "time" => time_prev
              }
-           } = prev,
+           } = _prev,
            allowed_op_counter
          }
        ) do
@@ -179,7 +177,7 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
              "time" => prev_time,
              "merchant" => prev_merchant
            }
-         } = prev
+         } = _prev
        ) do
 
     if is_doubled_transaction(prev_merchant, curr_merchant, prev_time, curr_time) do

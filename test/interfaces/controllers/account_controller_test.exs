@@ -26,11 +26,11 @@ defmodule NuAuthorizer.Interface.Controllers.AccountControllerTest do
       assert :account_already_initialized == AccountController.create(context.account_req ++ [%{}])
     end
 
-    test "given a account request with none account then not initialized account and return an error", context do
+    test "given a account request with none account then not initialized account and return an error" do
       assert :account_not_initialized == AccountController.create([])
     end
 
-    test "given a account request with wrong parameters then not initialized account and return an error", context do
+    test "given a account request with wrong parameters then not initialized account and return an error" do
       assert :account_creation_error == AccountController.create([%{"account" => %{}}])
     end
   end

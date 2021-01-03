@@ -2,11 +2,6 @@ defmodule NuAuthorizer.CreateTransactionTest do
   use ExUnit.Case, async: true
 
   alias NuAuthorizer.Application.UseCases.CreateTransactions
-  alias NuAuthorizer.Domain.Transaction
-  alias NuAuthorizer.Support.CustomHelpers
-
-
-  import Mock
 
   describe "execute/1" do
     setup do
@@ -133,7 +128,7 @@ defmodule NuAuthorizer.CreateTransactionTest do
              ] == CreateTransactions.execute(data)
     end
 
-    test "given a group of transaction with invalid parameter then drop operation", context do
+    test "given a group of transaction with invalid parameter then drop operation" do
       data = [
         %{
           "transaction" => %{
@@ -146,8 +141,7 @@ defmodule NuAuthorizer.CreateTransactionTest do
       assert [%{"transaction" => %{"amount" => 20, "time" => ~U[2019-02-13 11:00:00.000Z]}, "violations" => ["transaction-missed-merchant"]}] == CreateTransactions.execute(data)
     end
 
-    test "given a group of transaction and a unknown error happens then drop operation", context do
-      [head | _] = context.data
+    test "given a group of transaction and a unknown error happens then drop operation" do
       assert :transaction_unknown_error == CreateTransactions.execute(:error)
     end
   end

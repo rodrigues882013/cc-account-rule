@@ -29,3 +29,5 @@ nu_athorizer-*.tar
 .idea
 
 *.iml
+
+authorizer

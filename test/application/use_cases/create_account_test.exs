@@ -1,10 +1,7 @@
 defmodule NuAuthorizer.CreateAccountTest do
   use ExUnit.Case, async: true
 
-  import Mock
-
   alias NuAuthorizer.Application.UseCases.CreateAccount
-  alias NuAuthorizer.Domain.Account
 
   describe "execute/1" do
     setup do
@@ -30,8 +27,7 @@ defmodule NuAuthorizer.CreateAccountTest do
       assert Enum.at(data, 0) == CreateAccount.execute(data)
     end
 
-    test "given a valid account then not create account", context do
-      data = context.data
+    test "given a valid account then not create account" do
       assert :account_creation_error == CreateAccount.execute([%{"account" => %{}}])
     end
 

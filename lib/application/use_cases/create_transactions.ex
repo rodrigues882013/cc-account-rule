@@ -2,8 +2,6 @@ defmodule NuAuthorizer.Application.UseCases.CreateTransactions do
   @behaviour NuAuthorizer.Application.UseCases.Behaviours.CreateTransactionBehaviour
 
   alias NuAuthorizer.Domain.Transaction
-  alias NuAuthorizer.Infrastructure.Repository.TransactionRepository
-
 
   @impl NuAuthorizer.Application.UseCases.Behaviours.CreateTransactionBehaviour
   def execute(transactions) when is_list(transactions) do
