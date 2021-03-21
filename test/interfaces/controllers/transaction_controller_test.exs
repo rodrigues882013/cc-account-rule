@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.Interface.Controllers.TransactionControllerTest do
+defmodule DemoCCAccountRule.Interface.Controllers.TransactionControllerTest do
   use ExUnit.Case, async: true
 
-  alias NuAuthorizer.Interface.Controllers.TransactionController
+  alias DemoCCAccountRule.Interface.Controllers.TransactionController
 
 
   describe "create/1" do

@@ -1,4 +1,4 @@
-defmodule NuAuthorizer.Interface.Serializers.ResultSerializer do
+defmodule DemoCCAccountRule.Interface.Serializers.ResultSerializer do
 
   def serialize({account, result}) when is_list(result) do
     account

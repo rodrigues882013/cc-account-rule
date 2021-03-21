@@ -1,8 +1,8 @@
-defmodule NuAuthorizer.ExecuteTransactionTest do
+defmodule DemoCCAccountRule.ExecuteTransactionTest do
   use ExUnit.Case, async: true
 
-  alias NuAuthorizer.Application.UseCases.ExecuteTransaction
-  alias NuAuthorizer.Support.CustomHelpers
+  alias DemoCCAccountRule.Application.UseCases.ExecuteTransaction
+  alias DemoCCAccountRule.Support.CustomHelpers
 
   describe "execute/1" do
 

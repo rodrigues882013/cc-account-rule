@@ -1,9 +1,9 @@
-defmodule NuAuthorizer.Interface.Controllers.AccountController do
-  @behaviour NuAuthorizer.Interfaces.Controllers.Behaviours.ControllerBehaviour
+defmodule DemoCCAccountRule.Interface.Controllers.AccountController do
+  @behaviour DemoCCAccountRule.Interfaces.Controllers.Behaviours.ControllerBehaviour
 
-  alias NuAuthorizer.Application.UseCases.CreateAccount
+  alias DemoCCAccountRule.Application.UseCases.CreateAccount
 
-  @impl NuAuthorizer.Interfaces.Controllers.Behaviours.ControllerBehaviour
+  @impl DemoCCAccountRule.Interfaces.Controllers.Behaviours.ControllerBehaviour
   def create(account_req) do
     account_req
     |> CreateAccount.execute

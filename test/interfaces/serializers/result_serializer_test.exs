@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.Interface.Serializers.ResultSerializerTest do
+defmodule DemoCCAccountRule.Interface.Serializers.ResultSerializerTest do
   use ExUnit.Case, async: true
 
-  alias NuAuthorizer.Interface.Serializers.ResultSerializer
+  alias DemoCCAccountRule.Interface.Serializers.ResultSerializer
 
   describe "run" do
     setup do

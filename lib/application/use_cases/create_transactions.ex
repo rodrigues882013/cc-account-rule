@@ -1,15 +1,15 @@
-defmodule NuAuthorizer.Application.UseCases.CreateTransactions do
-  @behaviour NuAuthorizer.Application.UseCases.Behaviours.CreateTransactionBehaviour
+defmodule DemoCCAccountRule.Application.UseCases.CreateTransactions do
+  @behaviour DemoCCAccountRule.Application.UseCases.Behaviours.CreateTransactionBehaviour
 
-  alias NuAuthorizer.Domain.Transaction
+  alias DemoCCAccountRule.Domain.Transaction
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.CreateTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.CreateTransactionBehaviour
   def execute(transactions) when is_list(transactions) do
     transactions
     |> Enum.map(&(create_one/1))
   end
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.CreateTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.CreateTransactionBehaviour
   def execute(transactions) do
     transactions
     |> process_result

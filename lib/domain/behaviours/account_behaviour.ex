@@ -1,3 +1,3 @@
-defmodule NuAuthorizer.Domain.Behaviours.Account do
+defmodule DemoCCAccountRule.Domain.Behaviours.Account do
   @callback create(term()) :: {:ok, term()} | :error | :invalid_parameter
 end

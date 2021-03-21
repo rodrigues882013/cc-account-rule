@@ -1,19 +1,19 @@
-defmodule NuAuthorizer.Application.UseCases.CreateAccount do
-  @behaviour NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour
+defmodule DemoCCAccountRule.Application.UseCases.CreateAccount do
+  @behaviour DemoCCAccountRule.Application.UseCases.Behaviours.CreateAccountBehaviour
 
-  alias NuAuthorizer.Domain.Account
+  alias DemoCCAccountRule.Domain.Account
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.CreateAccountBehaviour
   def execute([%{"account" => _} = account]) do
     account
     |> Account.create
     |> process_result
   end
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.CreateAccountBehaviour
   def execute([]), do: process_result(:account_not_initialized)
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.CreateAccountBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.CreateAccountBehaviour
   def execute(accounts) when length(accounts) > 1 do
     process_result(:account_already_initialized)
   end

@@ -1,4 +1,4 @@
-defmodule NuAuthorizer.Support.CustomHelpers do
+defmodule DemoCCAccountRule.Support.CustomHelpers do
   def equal_list(list1, list2) do
     list1 -- list2 == list2 -- list1
   end

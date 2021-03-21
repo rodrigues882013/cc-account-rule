@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.Interface.Orchestrator do
-  alias NuAuthorizer.Interface.Controllers.AccountController
-  alias NuAuthorizer.Interface.Controllers.TransactionController
-  alias NuAuthorizer.Interface.Serializers.ResultSerializer
+defmodule DemoCCAccountRule.Interface.Orchestrator do
+  alias DemoCCAccountRule.Interface.Controllers.AccountController
+  alias DemoCCAccountRule.Interface.Controllers.TransactionController
+  alias DemoCCAccountRule.Interface.Serializers.ResultSerializer
 
   def run() do
     {account_payload, transactions_payload} = IO.read(:stdio, :all)

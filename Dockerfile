@@ -1,6 +1,6 @@
 FROM elixir:latest as builder
 
-ARG APP_NAME="authorizer"
+ARG APP_NAME="ccaccountrule"
 ARG MIX_ENV="prod"
 ARG VERSION="0.0.1"
 
@@ -12,4 +12,4 @@ COPY . /app
 
 RUN mix local.hex --force && mix local.rebar --force && mix deps.get
 RUN MIX_ENV=$MIX_ENV mix escript.build
-CMD ["./authorizer"]
+CMD ["./ccaccountrule"]

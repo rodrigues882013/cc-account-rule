@@ -3,11 +3,11 @@
 FILE_NAME="input"
 
 run: build
-	@docker run -i authorizer:latest authorizer -t < $(FILE_NAME)
+	@docker run -i ccaccountrule:latest ccaccountrule -t < $(FILE_NAME)
 
 test: build
-	@docker run -e MIX_ENV=test authorizer mix test
+	@docker run -e MIX_ENV=test ccaccountrule mix test
 
 build:
-	@docker build -t authorizer:latest .
+	@docker build -t ccaccountrule:latest .
 

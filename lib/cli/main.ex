@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.CLI do
+defmodule DemoCCAccountRule.CLI do
   require Logger
 
-  alias NuAuthorizer.Interface.Orchestrator
+  alias DemoCCAccountRule.Interface.Orchestrator
 
   def main(_args \\ []), do: init()
 

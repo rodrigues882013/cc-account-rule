@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.CreateAccountTest do
+defmodule DemoCCAccountRule.CreateAccountTest do
   use ExUnit.Case, async: true
 
-  alias NuAuthorizer.Application.UseCases.CreateAccount
+  alias DemoCCAccountRule.Application.UseCases.CreateAccount
 
   describe "execute/1" do
     setup do

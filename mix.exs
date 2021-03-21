@@ -1,12 +1,12 @@
-defmodule NuAuthorizer.MixProject do
+defmodule DemoCCAccountRule.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :authorizer,
+      app: :ccaccountrule,
       version: "0.1.0",
       elixir: "~> 1.11",
-      escript: [main_module: NuAuthorizer.CLI],
+      escript: [main_module: DemoCCAccountRule.CLI],
       elixirc_paths: elixirc_paths(Mix.env),
       start_permanent: Mix.env() == :prod,
       deps: deps()

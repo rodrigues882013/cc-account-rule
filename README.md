@@ -1,4 +1,4 @@
-# Authorizer
+# CCAccountRule
 
 A simple case of study about authorizations operation in bank or credit accounts scenario
 

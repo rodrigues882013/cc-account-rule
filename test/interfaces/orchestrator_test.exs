@@ -1,9 +1,9 @@
-defmodule NuAuthorizer.Interface.OrchestratorTest do
+defmodule DemoCCAccountRule.Interface.OrchestratorTest do
   use ExUnit.Case, async: true
 
   import Mock
 
-  alias NuAuthorizer.Interface.Orchestrator
+  alias DemoCCAccountRule.Interface.Orchestrator
 
   describe "run" do
 

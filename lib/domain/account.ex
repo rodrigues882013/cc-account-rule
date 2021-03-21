@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.Domain.Account do
-  @behaviour NuAuthorizer.Domain.Behaviours.Account
+defmodule DemoCCAccountRule.Domain.Account do
+  @behaviour DemoCCAccountRule.Domain.Behaviours.Account
 
-  @impl NuAuthorizer.Domain.Behaviours.Account
+  @impl DemoCCAccountRule.Domain.Behaviours.Account
   def create(
         %{
           "account" => %{
@@ -13,12 +13,12 @@ defmodule NuAuthorizer.Domain.Account do
     {:ok, value}
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Account
+  @impl DemoCCAccountRule.Domain.Behaviours.Account
   def create(%{} = _value) do
     :error
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Account
+  @impl DemoCCAccountRule.Domain.Behaviours.Account
   def create(_value) do
     :invalid_parameter
   end

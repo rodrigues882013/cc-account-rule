@@ -1,7 +1,7 @@
-defmodule  NuAuthorizer.Domain.Transaction do
-  @behaviour NuAuthorizer.Domain.Behaviours.Transaction
+defmodule  DemoCCAccountRule.Domain.Transaction do
+  @behaviour DemoCCAccountRule.Domain.Behaviours.Transaction
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -23,7 +23,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -44,7 +44,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -65,7 +65,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -86,7 +86,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -105,7 +105,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -124,7 +124,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(
         %{
           "transaction" => %{
@@ -140,7 +140,7 @@ defmodule  NuAuthorizer.Domain.Transaction do
     }
   end
 
-  @impl NuAuthorizer.Domain.Behaviours.Transaction
+  @impl DemoCCAccountRule.Domain.Behaviours.Transaction
   def create(_) do
     :error
   end

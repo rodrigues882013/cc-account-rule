@@ -1,7 +1,7 @@
-defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
-  @behaviour NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+defmodule DemoCCAccountRule.Application.UseCases.ExecuteTransaction do
+  @behaviour DemoCCAccountRule.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(
           transactions,
           %{
@@ -21,7 +21,7 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
     |> merge(transactions_with_previous_errors)
   end
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(
           transactions,
           %{
@@ -35,19 +35,19 @@ defmodule NuAuthorizer.Application.UseCases.ExecuteTransaction do
     |> Enum.map(fn tx -> apply_credit_card_rule(tx) end)
   end
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(transactions, :account_not_initialized) do
     transactions
     |> Enum.map(fn tx -> apply_account_not_initialized_rule(tx) end)
   end
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(transactions, :account_already_initialized) do
     transactions
     |> Enum.map(fn tx -> apply_account_already_initialized_rule(tx) end)
   end
 
-  @impl NuAuthorizer.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
+  @impl DemoCCAccountRule.Application.UseCases.Behaviours.ExecuteTransactionBehaviour
   def execute(transactions, :account_creation_error) do
     transactions
     |> Enum.map(fn tx -> apply_account_creation_error_rule(tx) end)
