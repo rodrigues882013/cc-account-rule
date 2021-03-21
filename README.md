@@ -2,15 +2,6 @@
 
 A simple case of study about authorizations operation in bank or credit accounts scenario
 
-## Considerations
-
-I follow some guidelines of clean architecture
-https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html by Robert C. Martin, of course
-I didn't follow all of them, however I try to take account boundaries and responsibilities in my layers to build
-the exercise. I decided to use elixir for simplicity, I've been working with it for one year, and I feel comfortable
-to use it in an exercise such that, I decided not use tools that I have more expertise like java and python for try do things
-using 100% of functional approach.
-
 ## Execution
 
 ```shell script
